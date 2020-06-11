@@ -1,4 +1,4 @@
-package com.aadp.vend.ui.contoller;
+package com.aadp.vend.ws.ui.contoller;
 
 import javax.annotation.PostConstruct;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users")
 public class UserController {
 	
 

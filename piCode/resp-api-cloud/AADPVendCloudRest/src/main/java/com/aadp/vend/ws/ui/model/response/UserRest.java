@@ -1,4 +1,4 @@
-package com.aadp.vend.ui.model.response;
+package com.aadp.vend.ws.ui.model.response;
 
 public class UserRest {
 	private String userId;

@@ -1,4 +1,4 @@
-package com.aadp.vend.ui.model.request;
+package com.aadp.vend.ws.ui.model.request;
 
 public class PasswordResetRequestModel {
 	private String email;

@@ -1,6 +1,6 @@
-package com.aadp.vend.ui.model.request;
+package com.aadp.vend.ws.ui.model.request;
 
-public class LoginRequestModel {
+public class UserLoginRequestModel {
 	private String email;
 	private String password;
 
