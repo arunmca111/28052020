@@ -23,6 +23,15 @@ public class Utils {
         return generateRandomString(length);
     }
     
+    public String generateProductId(int length) {
+        return generateRandomString(length);
+    }
+    public String generateOrderId(int length) {
+        return generateRandomString(length);
+    }
+    public String generateCartItemId(int length) {
+        return generateRandomString(length);
+    }
     public String generateAddressId(int length) {
         return generateRandomString(length);
     }
