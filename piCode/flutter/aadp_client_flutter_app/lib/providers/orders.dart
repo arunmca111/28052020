@@ -29,6 +29,10 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
+  final String authToken;
+
+  Orders(this.authToken, this._orders);
+
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     const url = 'http://10.0.2.2:8081/orders/order';
     final timeStamp = DateTime.now();
@@ -39,6 +43,7 @@ class Orders with ChangeNotifier {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          "Authorization": authToken,
         },
         body: json.encode({
           'ordersId': '',
@@ -82,7 +87,11 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     const url = 'http://10.0.2.2:8081/orders/';
-    final response = await http.get(url);
+    final response = await http.get(url, headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": authToken,
+    });
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as List<dynamic>;
     if (extractedData == null) {

@@ -74,6 +74,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         res.addHeader("UserID", userDto.getUserId());
+        res.addHeader("expiresIn",  String.valueOf(SecurityConstants.EXPIRATION_TIME));
+        //TODO
+        res.setHeader("Access-Control-Expose-Headers", "*");
 
     }  
 

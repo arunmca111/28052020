@@ -8,8 +8,12 @@ import 'package:logger/logger.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
+  Products(this.authToken, this._productItems);
+
   List<Product> _productItems = [];
   var logger = Logger();
+
+  final String authToken;
 
   List<Product> get productItems {
     return [..._productItems];
@@ -26,7 +30,14 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts() async {
     const url = 'http://10.0.2.2:8081/products/';
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": authToken,
+        },
+      );
       final extractedData = json.decode(response.body) as List<dynamic>;
       final List<Product> loadedProducts = [];
 
@@ -58,6 +69,7 @@ class Products with ChangeNotifier {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          "Authorization": authToken,
         },
         body: json.encode({
           'id': '',
@@ -98,6 +110,7 @@ class Products with ChangeNotifier {
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
+            "Authorization": authToken,
           },
           body: json.encode({
             'title': newProduct.title,
@@ -122,6 +135,7 @@ class Products with ChangeNotifier {
     final response = await http.delete(url, headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
+      "Authorization": authToken
     });
     logger.d("Status code ->>>>>" + response.statusCode.toString());
     if (response.statusCode >= 400) {

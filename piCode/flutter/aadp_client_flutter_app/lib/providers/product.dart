@@ -24,7 +24,7 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
@@ -35,6 +35,7 @@ class Product with ChangeNotifier {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          "Authorization": token,
         },
         body: json.encode({
           'isFavorite': isFavorite,
