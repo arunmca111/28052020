@@ -28,7 +28,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     
-    private String contentType;
+    //private String contentType;
  
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -39,7 +39,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
         	
-        	contentType = req.getHeader("Accept");
+        	//contentType = req.getHeader("Accept");
         	
             UserLoginRequestModel creds = new ObjectMapper()
                     .readValue(req.getInputStream(), UserLoginRequestModel.class);

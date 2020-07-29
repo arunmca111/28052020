@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,9 +19,10 @@ public class Products implements Serializable {
 	protected Products() {
 	}
 
-	public Products(String id, String title, String description, double price, String imageUrl,
+	public Products(String id,String userId,  String title, String description, double price, String imageUrl,
 			boolean isFavorite) {
 		this.id = id;
+		this.userId=userId;
 		this.title = title;
 		this.description = description;
 		this.price = price;
@@ -35,12 +34,36 @@ public class Products implements Serializable {
 	@Id
 	@Column(nullable = false, length = 120)
 	private String id;
+	
+	@Column(nullable = false, length = 50)
+	private String userId;
+	
+	@Column(nullable = false)
+	private String title;
+
+	@Column(nullable = false, length = 250)
+	private String description;
+
+	@Column(nullable = false, length = 18)
+	private double price;
+
+	@Column(nullable = false, length = 150)
+	private String imageUrl;
+
+	@UpdateTimestamp
+	private LocalDateTime productLastUpdatedDate;
+
+	@CreationTimestamp
+	private LocalDateTime productCreatedDate;
+
+	@Column(nullable = false)
+	private boolean isFavorite = false;
 
 	public String getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id) { 
 		this.id = id;
 	}
 
@@ -100,33 +123,16 @@ public class Products implements Serializable {
 		this.isFavorite = isFavorite;
 	}
 
-	@Column(nullable = false)
-	private String title;
-
-	@Column(nullable = false, length = 250)
-	private String description;
-
-	@Column(nullable = false, length = 18)
-	private double price;
-
-	@Column(nullable = false, length = 150)
-	private String imageUrl;
-
-	@UpdateTimestamp
-	private LocalDateTime productLastUpdatedDate;
-
-	@CreationTimestamp
-	private LocalDateTime productCreatedDate;
-
-	@Column(nullable = false)
-	private boolean isFavorite = false;
-	
-
-
-
-
 	@Override
 	public String toString() {
 		return String.format("Proucts[%s]", title);
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }

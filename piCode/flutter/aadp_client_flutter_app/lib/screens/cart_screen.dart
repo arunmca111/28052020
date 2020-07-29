@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/orders.dart';
+import 'package:flutter_complete_guide/providers/paymentsInfo.dart';
+import 'package:flutter_complete_guide/screens/payment_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart' show Cart;
@@ -99,6 +101,32 @@ class OrderButton extends StatefulWidget {
 
 class _OrderButtonState extends State<OrderButton> {
   var _isloading = false;
+
+  // A method that launches the SelectionScreen and awaits the
+  // result from Navigator.pop.
+  Future<bool> _navigateAndDisplaySelection(BuildContext context) async {
+    /*final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PaymentScreen()),
+    );*/
+
+    final result = await Navigator.of(context).pushNamed(
+      PaymentScreen.paymentRouteName,
+    );
+
+    if (result == null) {
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text("Payment Failed")));
+      return false;
+    } else {
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text("$result")));
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
@@ -108,27 +136,34 @@ class _OrderButtonState extends State<OrderButton> {
               setState(() {
                 _isloading = true;
               });
-              await Provider.of<Orders>(context, listen: false).addOrder(
-                widget.cart.items.values.toList(),
-                widget.cart.totalPrice,
-              );
+              await Provider.of<PaymentsInfo>(context, listen: false)
+                  .fetchAndSetPaymentInfo();
+              var paymentResultStatus =
+                  await _navigateAndDisplaySelection(context);
+              if (paymentResultStatus) {
+                await Provider.of<Orders>(context, listen: false).addOrder(
+                  widget.cart.items.values.toList(),
+                  widget.cart.totalPrice,
+                );
+                widget.cart.clear();
+              } else {}
 
               setState(() {
                 _isloading = false;
               });
-              widget.cart.clear();
+
               //Navigator.of(context).pop();
               /* Navigator.push(context,
             new MaterialPageRoute(builder: (context) => null));*/
             },
-      color: Colors.green,
+      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.only(top: 12, left: 60, right: 60, bottom: 12),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(24))),
       child: _isloading
           ? CircularProgressIndicator()
           : Text(
-              "Order Now",
+              "Pay",
               style: CustomTextStyle.textFormFieldSemiBold
                   .copyWith(color: Colors.white),
             ),

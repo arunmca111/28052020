@@ -1,7 +1,5 @@
 package com.aadp.vend.ws.service;
 
-import java.util.List;
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.aadp.vend.ws.shared.dto.HumanUserDto;

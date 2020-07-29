@@ -1,7 +1,6 @@
 package com.aadp.vend.ws.shared;
 
 import java.security.SecureRandom;
-import java.util.Date;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
@@ -27,6 +26,9 @@ public class Utils {
         return generateRandomString(length);
     }
     public String generateOrderId(int length) {
+        return generateRandomString(length);
+    }
+    public String generatePaymentRef(int length) {
         return generateRandomString(length);
     }
     public String generateCartItemId(int length) {

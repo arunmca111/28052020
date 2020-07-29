@@ -2,7 +2,6 @@ package com.aadp.vend.ws.shared.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class HumanUserDto implements Serializable{
 

@@ -7,6 +7,7 @@ public class CartItemsDto implements Serializable{
 	private static final long serialVersionUID = 6820758335911112427L;
 	
 	private String cartId;
+	private String prodId;
 	private String title;
 	private int quantity;
 	private double price;
@@ -35,6 +36,12 @@ public class CartItemsDto implements Serializable{
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public String getProdId() {
+		return prodId;
+	}
+	public void setProdId(String prodId) {
+		this.prodId = prodId;
 	}
 	
 	

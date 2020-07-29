@@ -10,6 +10,7 @@ public class OrdersDto implements Serializable{
 	private static final long serialVersionUID = 1493712766075522129L;
 	
 	private String ordersId;
+	private String userId;
 	private double amount;
 	private Date dateTime;
 	private List<CartItemsDto> cartItems;
@@ -39,6 +40,12 @@ public class OrdersDto implements Serializable{
 	}
 	public void setCartItems(List<CartItemsDto> cartItems) {
 		this.cartItems = cartItems;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 	

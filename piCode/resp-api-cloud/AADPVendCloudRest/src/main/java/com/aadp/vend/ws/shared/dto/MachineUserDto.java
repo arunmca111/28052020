@@ -2,14 +2,12 @@ package com.aadp.vend.ws.shared.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class MachineUserDto implements Serializable {
 
 	private static final long serialVersionUID = -1709254820015176953L;
 
 	private String email;
-	private String humanUserEmail;
 	private String userId;
 	private String firstName;
 	private String lastName;
@@ -25,7 +23,10 @@ public class MachineUserDto implements Serializable {
 	private LocalDateTime boardChangeDate;
 	private LocalDateTime motorChangeDate;
 	private LocalDateTime lastServicedDate;
-	private int maxColumn;
+	private String machineType;
+	private String machineCode;
+	private String machineDescription;
+	
 
 	public String getEmail() {
 		return email;
@@ -35,13 +36,7 @@ public class MachineUserDto implements Serializable {
 		this.email = email;
 	}
 
-	public String getHumanUserEmail() {
-		return humanUserEmail;
-	}
-
-	public void setHumanUserEmail(String humanUserEmail) {
-		this.humanUserEmail = humanUserEmail;
-	}
+	
 
 	public String getUserId() {
 		return userId;
@@ -155,12 +150,28 @@ public class MachineUserDto implements Serializable {
 		this.lastServicedDate = lastServicedDate;
 	}
 
-	public int getMaxColumn() {
-		return maxColumn;
+	public String getMachineCode() {
+		return machineCode;
 	}
 
-	public void setMaxColumn(int maxColumn) {
-		this.maxColumn = maxColumn;
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
+	}
+
+	public String getMachineDescription() {
+		return machineDescription;
+	}
+
+	public void setMachineDescription(String machineDescription) {
+		this.machineDescription = machineDescription;
+	}
+
+	public String getMachineType() {
+		return machineType;
+	}
+
+	public void setMachineType(String machineType) {
+		this.machineType = machineType;
 	}
 
 }

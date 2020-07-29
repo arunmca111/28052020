@@ -3,6 +3,7 @@ package com.aadp.vend.ws.ui.model.request;
 public class CartItemsModel {
 	
 	private String cartId;
+	private String prodId;
 	private String title;
 	private int quantity;
 	private double price;
@@ -30,6 +31,12 @@ public class CartItemsModel {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public String getProdId() {
+		return prodId;
+	}
+	public void setProdId(String prodId) {
+		this.prodId = prodId;
 	}
 	
 

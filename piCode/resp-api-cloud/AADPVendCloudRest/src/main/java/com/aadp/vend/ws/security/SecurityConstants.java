@@ -7,7 +7,8 @@ public class SecurityConstants {
 	public static final long PASSWORD_RESET_EXPIRATION_TIME = 3600000; // 1 hour
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
-	public static final String SIGN_UP_URL = "/users/human";
+	public static final String SIGN_UP_HUMAN_URL = "/users/human";
+	public static final String SIGN_UP_MACHINE_URL = "/users/machine";
 	public static final String LOCAL_H2_TEST_URL = "/h2/**";
 	public static final String VERIFICATION_EMAIL_URL = "/users/email-verification";
 	public static final String PASSWORD_RESET_REQUEST_URL = "/users/password-reset-request";

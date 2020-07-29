@@ -8,6 +8,6 @@ public interface OrdersService  {
 
 	OrdersDto createOrders(OrdersDto orders) throws Exception;
 	
-	List<OrdersDto> fetchAllOrders() throws Exception;
+	List<OrdersDto> fetchAllOrders(String userId) throws Exception;
 
 }

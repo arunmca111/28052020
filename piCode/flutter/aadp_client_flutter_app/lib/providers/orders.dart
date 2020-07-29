@@ -30,8 +30,8 @@ class Orders with ChangeNotifier {
   }
 
   final String authToken;
-
-  Orders(this.authToken, this._orders);
+  final String userId;
+  Orders(this.authToken, this.userId, this._orders);
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     const url = 'http://10.0.2.2:8081/orders/order';
@@ -47,11 +47,13 @@ class Orders with ChangeNotifier {
         },
         body: json.encode({
           'ordersId': '',
+          'userId': userId,
           'amount': total,
           'dateTime': timeStamp.toIso8601String(),
           'cartItems': cartProducts
               .map((cp) => {
                     'cartId': '',
+                    'prodId': cp.prodId,
                     'title': cp.title,
                     'quantity': cp.quantity,
                     'price': cp.price,
@@ -86,7 +88,8 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    const url = 'http://10.0.2.2:8081/orders/';
+    final url = 'http://10.0.2.2:8081/orders/$userId';
+    logger.d("url is ----> " + url);
     final response = await http.get(url, headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",

@@ -6,6 +6,7 @@ import java.util.List;
 public class OrderDetailRequestModel {
 	
 	private String ordersId;
+	private String userId;
 	private double amount;
 	private Date dateTime;
 	private List<CartItemsModel> cartItems;
@@ -35,6 +36,12 @@ public class OrderDetailRequestModel {
 	}
 	public void setCartItems(List<CartItemsModel> cartItems) {
 		this.cartItems = cartItems;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 	

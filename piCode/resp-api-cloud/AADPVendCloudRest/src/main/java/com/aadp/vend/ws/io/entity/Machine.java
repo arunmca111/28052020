@@ -3,23 +3,25 @@ package com.aadp.vend.ws.io.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "machineUser")
-public class MachineUserEnitity extends Users implements Serializable {
+@Table(name = "machine")
+public class Machine extends Users implements Serializable {
 
 	private static final long serialVersionUID = -4437279597077629495L;
 
-	protected MachineUserEnitity() {
+	protected Machine() {
 	}
 
-	public MachineUserEnitity(String userEmail, String userId, String firstName, String lastName,
+	public Machine(String userEmail, String userId, String firstName, String lastName,
 			String encryptedPassword, Boolean emailVerificationStatus, String address, String machineType,
 			Boolean refrigerated, LocalDateTime boardChangeDate, LocalDateTime motorChangeDate,
-			LocalDateTime lastServicedDate, int maxColumn) {
+			LocalDateTime lastServicedDate, String machineCode, String machineDescription) {
 		super(userEmail, userId, firstName, lastName, encryptedPassword, emailVerificationStatus, address);
 
 		this.machineType = machineType;
@@ -27,28 +29,25 @@ public class MachineUserEnitity extends Users implements Serializable {
 		this.boardChangeDate = boardChangeDate;
 		this.motorChangeDate = motorChangeDate;
 		this.lastServicedDate = lastServicedDate;
-		this.maxColumn = maxColumn;
-	}
-
+		this.machineCode = machineCode;
+		this.machineDescription = machineDescription;
+ 	}
+	
+	
+	@Column(nullable = false, length = 7)
+    private String machineCode;
+	@Column(nullable = false, length = 7)
 	private String machineType;
-
+	@Column(nullable = false, length = 50)
+	private String machineDescription;
+	private Boolean isActive;
 	private Boolean isRefrigerated;
 	private LocalDateTime boardChangeDate;
 	private LocalDateTime motorChangeDate;
 	private LocalDateTime lastServicedDate;
-	private int maxColumn;
+	
 
-	@ManyToOne
-	private HumanUserEntity humanUser;
-
-	public HumanUserEntity getHumanUser() {
-		return humanUser;
-	}
-
-	public void setHumanUser(HumanUserEntity humanUser) {
-		this.humanUser = humanUser;
-	}
-
+	
 	public String getMachineType() {
 		return machineType;
 	}
@@ -89,12 +88,29 @@ public class MachineUserEnitity extends Users implements Serializable {
 		this.lastServicedDate = lastServicedDate;
 	}
 
-	public int getMaxColumn() {
-		return maxColumn;
+	public String getMachineDescription() {
+		return machineDescription;
 	}
 
-	public void setMaxColumn(int maxColumn) {
-		this.maxColumn = maxColumn;
+	public void setMachineDescription(String machineDescription) {
+		this.machineDescription = machineDescription;
 	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getMachineCode() {
+		return machineCode;
+	}
+
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
+	}
+
 
 }

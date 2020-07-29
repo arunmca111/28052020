@@ -3,6 +3,7 @@ package com.aadp.vend.ws.ui.model.request;
 public class ProductDetailRequestModel {
 	
 	private String id;
+	private String userId;
 	private String title;
 	private String description;
 	private double price;
@@ -45,6 +46,12 @@ public class ProductDetailRequestModel {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 

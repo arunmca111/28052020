@@ -1,8 +1,5 @@
 package com.aadp.vend.ws.security;
 
-import java.util.Arrays;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,9 +7,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.aadp.vend.ws.service.UserService;
 
@@ -30,18 +24,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
-				/*
-				 * .antMatchers(HttpMethod.POST, "/products/product").permitAll()
-				 * .antMatchers(HttpMethod.GET, "/products/*").permitAll()
-				 * .antMatchers(HttpMethod.PATCH, "/products/*").permitAll()
-				 * .antMatchers(HttpMethod.DELETE, "/products/*").permitAll()
-				 * .antMatchers(HttpMethod.POST, "/orders/order").permitAll()
-				 * .antMatchers(HttpMethod.GET, "/orders/*").permitAll()
-				 * .antMatchers(HttpMethod.PATCH, "/orders/*").permitAll()
-				 * .antMatchers(HttpMethod.DELETE, "/orders/*").permitAll()
-				 */
-				.antMatchers(SecurityConstants.LOCAL_H2_TEST_URL).permitAll().anyRequest().authenticated().and()
+				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_HUMAN_URL).permitAll()
+				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_MACHINE_URL).permitAll()
+				  .antMatchers(HttpMethod.POST, "/products/product").permitAll()
+				  .antMatchers(HttpMethod.GET, "/products/*").permitAll()
+				  .antMatchers(HttpMethod.GET, "/products/*/*").permitAll()
+				  .antMatchers(HttpMethod.PATCH, "/products/*").permitAll()
+				  .antMatchers(HttpMethod.DELETE, "/products/*").permitAll()
+				  .antMatchers(HttpMethod.POST, "/orders/order").permitAll()
+				  .antMatchers(HttpMethod.GET, "/orders/*").permitAll()
+				  .antMatchers(HttpMethod.GET, "/payments/*").permitAll()
+				  .antMatchers(HttpMethod.GET, "/machine").permitAll()
+				  .antMatchers(HttpMethod.PATCH, "/orders/*").permitAll()
+				  .antMatchers(HttpMethod.DELETE, "/orders/*").permitAll()
+				  .antMatchers(SecurityConstants.LOCAL_H2_TEST_URL).permitAll().anyRequest().authenticated().and()
 				.addFilter(getAuthenticationFilter())
 		        .addFilter(new AuthorizationFilter(authenticationManager()))
 		        .sessionManagement()

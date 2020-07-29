@@ -6,6 +6,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aadp.vend.ws.service.OrdersService;
 import com.aadp.vend.ws.shared.dto.OrdersDto;
-import com.aadp.vend.ws.shared.dto.ProductsDto;
 import com.aadp.vend.ws.ui.model.request.OrderDetailRequestModel;
 import com.aadp.vend.ws.ui.model.response.OrdersFetchResponse;
 import com.aadp.vend.ws.ui.model.response.OrdersResponse;
-import com.aadp.vend.ws.ui.model.response.ProductsResponse;
 
 @RestController
 @RequestMapping("/orders")
@@ -45,15 +44,15 @@ public class OrderController {
 		return returnValue;
 	}
 	
-	@GetMapping()
-	public List<OrdersFetchResponse> getAllOrders() {
+	@GetMapping(path = "/{userId}")
+	public List<OrdersFetchResponse> getAllOrders(@PathVariable String userId) {
 
 		List<OrdersDto> ordersDto = null;
 		List<OrdersFetchResponse> returnValue = new ArrayList<OrdersFetchResponse>();
 		ModelMapper modelMapper = new ModelMapper();
 
 		try {
-			ordersDto = ordersService.fetchAllOrders();
+			ordersDto = ordersService.fetchAllOrders(userId);
 
 			for (OrdersDto orderDto : ordersDto) {
 				OrdersFetchResponse ordersFetchModel = new OrdersFetchResponse();

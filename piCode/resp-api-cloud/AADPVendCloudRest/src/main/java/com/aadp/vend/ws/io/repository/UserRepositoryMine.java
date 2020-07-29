@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aadp.vend.ws.io.entity.Users;
 import com.aadp.vend.ws.io.entity.HumanUserEntity;
-import com.aadp.vend.ws.io.entity.MachineUserEnitity;
+import com.aadp.vend.ws.io.entity.Machine;
 
 @Repository
 @Transactional
@@ -29,8 +29,8 @@ public class UserRepositoryMine {
 		return humanUser;
 	}
 	
-	public MachineUserEnitity findMachineUserByEmailId(String emailId) {
-		MachineUserEnitity machineUser = em.find(MachineUserEnitity.class, emailId);
+	public Machine findMachineUserByEmailId(String emailId) {
+		Machine machineUser = em.find(Machine.class, emailId);
 		logger.info("MachineUser -> {}", machineUser);
 		return machineUser;
 	}
@@ -41,25 +41,13 @@ public class UserRepositoryMine {
 		return users;
 	}
 
-	public MachineUserEnitity addMachineForHumanUser(String humanEmail, List<MachineUserEnitity> machineusers) {
+	public Machine addMachineUser( Machine machineuser) {
 
-		logger.info("adding Machine for user -> {}", humanEmail);
-
-		HumanUserEntity humanUser = findHumanUserByEmailId(humanEmail);
-		for (MachineUserEnitity machineuser : machineusers) {
-
-			// setting the relationship
-			humanUser.addMachineUser(machineuser);
-			machineuser.setHumanUser(humanUser);
 			em.persist(machineuser);
 			em.flush();
 
-			logger.info("Machine User Added -> {}", humanUser.getEmail());
-			logger.info("Machine User Added -> {}", humanUser.getUserId());
+			logger.info("Machine User Added -> {}", machineuser.getEmail());
 			return machineuser;
-			
-		}
-		return null;
 	}
 
 	public HumanUserEntity addHumanUser(HumanUserEntity humanUser) {
@@ -76,8 +64,8 @@ public class UserRepositoryMine {
 		return em.createQuery("select h from HumanUser h", HumanUserEntity.class).getResultList();
 	}
 
-	public List<MachineUserEnitity> retrieveAllMachineUser() {
-		return em.createQuery("select m from MachineUser m", MachineUserEnitity.class).getResultList();
+	public List<Machine> retrieveAllMachineUser() {
+		return em.createQuery("select m from MachineUser m", Machine.class).getResultList();
 	}
 
 }

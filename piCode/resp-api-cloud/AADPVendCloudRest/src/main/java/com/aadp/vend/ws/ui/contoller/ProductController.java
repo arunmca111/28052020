@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aadp.vend.ws.service.ProductsService;
 import com.aadp.vend.ws.shared.dto.ProductsDto;
+import com.aadp.vend.ws.ui.model.request.FavoriteRequestModel;
 import com.aadp.vend.ws.ui.model.request.ProductDetailRequestModel;
 import com.aadp.vend.ws.ui.model.response.OperationStatusModel;
 import com.aadp.vend.ws.ui.model.response.ProductsResponse;
@@ -54,7 +55,7 @@ public class ProductController {
 		ProductsResponse returnValue = new ProductsResponse();
 		ProductsDto productsDto = modelMapper.map(productDetails, ProductsDto.class);
 		ProductsDto updateProductDto = null;
-		
+
 		try {
 			updateProductDto = productsService.updateProduct(id, productsDto);
 		} catch (Exception e) {
@@ -64,7 +65,7 @@ public class ProductController {
 		returnValue = new ModelMapper().map(updateProductDto, ProductsResponse.class);
 		return returnValue;
 	}
-	
+
 	@DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public OperationStatusModel deleteProduct(@PathVariable String id) {
 		OperationStatusModel returnValue = new OperationStatusModel();
@@ -78,7 +79,6 @@ public class ProductController {
 			e.printStackTrace();
 		}
 
-		
 		return returnValue;
 	}
 
@@ -104,22 +104,47 @@ public class ProductController {
 		return returnValue;
 
 	}
+	
+	@GetMapping(path = "/{userId}/userProducts", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
+	public List<ProductsResponse> getProductsByuserID(@PathVariable String userId) {
+
+		List<ProductsDto> productsDto = null;
+		List<ProductsResponse> returnValue = new ArrayList<ProductsResponse>();
+		ModelMapper modelMapper = new ModelMapper();
+
+		try {
+			productsDto = productsService.getProductsByuserID(userId);
+
+			for (ProductsDto productDto : productsDto) {
+				ProductsResponse productModel = new ProductsResponse();
+				modelMapper.map(productDto, productModel);
+				returnValue.add(productModel);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnValue;
+
+	}
+
 
 	@PostMapping
 	@RequestMapping("/product")
 	public ProductsResponse createProduct(@RequestBody ProductDetailRequestModel productDetails) {
 		ProductsResponse returnValue = new ProductsResponse();
-		ProductsDto createdUser = null;
+		ProductsDto createdProduct = null;
 		ModelMapper modelMapper = new ModelMapper();
 		ProductsDto productsDto = modelMapper.map(productDetails, ProductsDto.class);
 
 		try {
-			createdUser = productsService.createProducts(productsDto);
+			createdProduct = productsService.createProducts(productsDto);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		returnValue = modelMapper.map(createdUser, ProductsResponse.class);
+		returnValue = modelMapper.map(createdProduct, ProductsResponse.class);
 
 		return returnValue;
 	}
@@ -134,5 +159,11 @@ public class ProductController {
 		return "update Product called";
 	}
 
+	@PostMapping
+	@RequestMapping("/favorite")
+	public boolean addFavorite(@RequestBody FavoriteRequestModel favDetail) {
 
+		return true;
+
+	}
 }

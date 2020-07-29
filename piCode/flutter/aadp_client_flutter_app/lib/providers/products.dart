@@ -8,12 +8,13 @@ import 'package:logger/logger.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  Products(this.authToken, this._productItems);
+  Products(this.authToken, this.userId, this._productItems);
 
   List<Product> _productItems = [];
   var logger = Logger();
 
   final String authToken;
+  final String userId;
 
   List<Product> get productItems {
     return [..._productItems];
@@ -27,8 +28,9 @@ class Products with ChangeNotifier {
     return productItems.firstWhere((element) => element.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
-    const url = 'http://10.0.2.2:8081/products/';
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString = filterByUser ? "$userId/userProducts" : '';
+    final url = 'http://10.0.2.2:8081/products/$filterString';
     try {
       final response = await http.get(
         url,
@@ -73,6 +75,7 @@ class Products with ChangeNotifier {
         },
         body: json.encode({
           'id': '',
+          'userId': userId,
           'title': product.title,
           'description': product.description,
           'imageUrl': product.imageUrl,

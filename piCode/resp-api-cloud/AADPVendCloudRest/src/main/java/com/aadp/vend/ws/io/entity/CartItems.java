@@ -4,9 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -17,6 +15,9 @@ public class CartItems implements Serializable {
 	@Id
 	@Column(nullable = false, length = 120)
 	private String cartId;
+	
+	@Column(nullable = false, length = 120)
+	private String prodId;
 	
 	@Column(length=45, nullable=false)
 	private String title;
@@ -69,6 +70,14 @@ public class CartItems implements Serializable {
 
 	public void setCartId(String cartId) {
 		this.cartId = cartId;
+	}
+
+	public String getProdId() {
+		return prodId;
+	}
+
+	public void setProdId(String prodId) {
+		this.prodId = prodId;
 	}
 
 }

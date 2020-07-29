@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 
 class CartItem {
   final String id;
+  final String prodId;
   final String imageUrl;
   final String title;
   final int quantity;
@@ -10,6 +11,7 @@ class CartItem {
 
   CartItem({
     @required this.id,
+    @required this.prodId,
     @required this.imageUrl,
     @required this.title,
     @required this.quantity,
@@ -74,6 +76,7 @@ class Cart with ChangeNotifier {
         productId,
         (existingCartItem) => CartItem(
           id: existingCartItem.id,
+          prodId: existingCartItem.prodId,
           imageUrl: existingCartItem.imageUrl,
           title: existingCartItem.title,
           price: existingCartItem.price,
@@ -85,6 +88,7 @@ class Cart with ChangeNotifier {
         productId,
         () => CartItem(
           id: DateTime.now().toString(),
+          prodId: productId,
           imageUrl: imageUrl,
           title: title,
           price: price,
@@ -115,6 +119,7 @@ class Cart with ChangeNotifier {
           productId,
           (existingCartItem) => CartItem(
                 id: existingCartItem.id,
+                prodId: existingCartItem.prodId,
                 title: existingCartItem.title,
                 price: existingCartItem.price,
                 imageUrl: existingCartItem.imageUrl,

@@ -7,6 +7,7 @@ public class ProductsDto implements Serializable {
 	private static final long serialVersionUID = -5020622906546337589L;
 	
 	private String id;
+	private String userId;
 	private String title;
 	private String description;
 	private double price;
@@ -48,6 +49,12 @@ public class ProductsDto implements Serializable {
 	}
 	public void setFavorite(boolean isFavorite) {
 		this.isFavorite = isFavorite;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 

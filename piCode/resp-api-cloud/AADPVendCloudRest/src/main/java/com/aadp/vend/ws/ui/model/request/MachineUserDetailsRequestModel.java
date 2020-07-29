@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public class MachineUserDetailsRequestModel {
 
 	private String email;
-	private String humanUserEmail;
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
@@ -15,22 +14,15 @@ public class MachineUserDetailsRequestModel {
 	private LocalDateTime boardChangeDate;
 	private LocalDateTime motorChangeDate;
 	private LocalDateTime lastServicedDate;
-	private int maxColumn;
-
+	private String machineType;
+	private String machineCode;
+	private String machineDescription;
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getHumanUserEmail() {
-		return humanUserEmail;
-	}
-
-	public void setHumanUserEmail(String humanUserEmail) {
-		this.humanUserEmail = humanUserEmail;
 	}
 
 	public String getFirstName() {
@@ -97,12 +89,28 @@ public class MachineUserDetailsRequestModel {
 		this.lastServicedDate = lastServicedDate;
 	}
 
-	public int getMaxColumn() {
-		return maxColumn;
+	public String getMachineCode() {
+		return machineCode;
 	}
 
-	public void setMaxColumn(int maxColumn) {
-		this.maxColumn = maxColumn;
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
+	}
+
+	public String getMachineDescription() {
+		return machineDescription;
+	}
+
+	public void setMachineDescription(String machineDescription) {
+		this.machineDescription = machineDescription;
+	}
+
+	public String getMachineType() {
+		return machineType;
+	}
+
+	public void setMachineType(String machineType) {
+		this.machineType = machineType;
 	}
 
 }

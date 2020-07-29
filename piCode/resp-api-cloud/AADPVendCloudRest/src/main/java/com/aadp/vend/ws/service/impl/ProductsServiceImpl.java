@@ -11,6 +11,7 @@ import com.aadp.vend.ws.io.entity.Products;
 import com.aadp.vend.ws.io.repository.ProductsRepository;
 import com.aadp.vend.ws.service.ProductsService;
 import com.aadp.vend.ws.shared.Utils;
+import com.aadp.vend.ws.shared.dto.FavoriteDto;
 import com.aadp.vend.ws.shared.dto.ProductsDto;
 
 @Service
@@ -35,12 +36,25 @@ public class ProductsServiceImpl implements ProductsService {
 		return returnValue;
 
 	}
-
+	
 	@Override
 	public List<ProductsDto> getAllProducts() throws Exception {
 		List<ProductsDto> returnValue = new ArrayList<>();
 		ModelMapper modelMapper = new ModelMapper();
 		Iterable<Products> products = productsRepository.findAllProducts();
+
+		for (Products product : products) {
+			returnValue.add(modelMapper.map(product, ProductsDto.class));
+		}
+
+		return returnValue;
+	}
+	
+	@Override
+	public List<ProductsDto> getProductsByuserID(String userId) throws Exception {
+		List<ProductsDto> returnValue = new ArrayList<>();
+		ModelMapper modelMapper = new ModelMapper();
+		Iterable<Products> products = productsRepository.getProductsByuserID(userId);
 
 		for (Products product : products) {
 			returnValue.add(modelMapper.map(product, ProductsDto.class));
@@ -109,6 +123,13 @@ public class ProductsServiceImpl implements ProductsService {
 
 		productsRepository.deleteProduct(productsEntity);
 
+	}
+
+	@Override
+	public boolean addFavorite(FavoriteDto favoriteDto) throws Exception {
+		
+
+		return true;
 	}
 
 }

@@ -1,11 +1,11 @@
 package com.aadp.vend.ws.service.impl;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import java.lang.reflect.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,6 @@ import com.aadp.vend.ws.io.repository.OrdersRepository;
 import com.aadp.vend.ws.service.OrdersService;
 import com.aadp.vend.ws.shared.Utils;
 import com.aadp.vend.ws.shared.dto.OrdersDto;
-import com.aadp.vend.ws.shared.dto.ProductsDto;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
@@ -28,7 +27,7 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public OrdersDto createOrders(OrdersDto orders) throws Exception {
-		if (ordersRepository.findOrdersById(orders.getOrdersId()) != null)
+		if (ordersRepository.findOrdersById(orders.getOrdersId(),orders.getUserId()) != null)
 			throw new Exception("Orders already exists");
 
 		ModelMapper modelMapper = new ModelMapper();
@@ -59,10 +58,10 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 	@Override
-	public List<OrdersDto> fetchAllOrders() throws Exception {
+	public List<OrdersDto> fetchAllOrders(String userId) throws Exception {
 		ModelMapper modelMapper = new ModelMapper();
 		List<OrdersDto> returnValue = new ArrayList<>();
-		List<Orders> storedOrdersDetails = ordersRepository.fetchAllOrders();
+		List<Orders> storedOrdersDetails = ordersRepository.fetchAllOrders(userId);
 
 		Type listType = new TypeToken<List<OrdersDto>>() {
 		}.getType();

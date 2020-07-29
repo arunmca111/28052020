@@ -3,6 +3,7 @@ package com.aadp.vend.ws.io.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aadp.vend.ws.io.entity.Products;
+import com.aadp.vend.ws.io.entity.ProductsFavorite;
 
 @Repository
 @Transactional
@@ -30,6 +32,12 @@ public class ProductsRepository {
 	public List<Products> findAllProducts() {
 		return em.createQuery("select p from Products p", Products.class).getResultList();
 	}
+	
+	  public List<Products> getProductsByuserID(String userId) {
+		    TypedQuery<Products> query = em.createQuery(
+		        "SELECT p FROM Products p WHERE p.userId = :userid", Products.class);
+		    return  query.setParameter("userid", userId).getResultList();
+		  } 
 
 	public Products addProducts(Products products) {
 
@@ -67,6 +75,25 @@ public class ProductsRepository {
 			logger.info("Products Deleted -> {}", products.getTitle());
 			
 			
+	}
+	
+	public boolean addFavorite(ProductsFavorite prodFav) {
+
+		logger.info("add Favorite");
+		
+			em.persist(prodFav);
+			em.flush();
+
+			logger.info("Products Favorite -> {}", prodFav.getProductId());
+			
+			return true;
+			
+	}
+	
+	public ProductsFavorite findProductsById(String productId, String userId) {
+		ProductsFavorite product = em.find(ProductsFavorite.class, productId);
+		logger.info("Products -> {}", product);
+		return product;
 	}
 	
 

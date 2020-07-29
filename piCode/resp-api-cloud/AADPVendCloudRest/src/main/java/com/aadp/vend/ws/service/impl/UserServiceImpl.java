@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.aadp.vend.ws.exceptions.UserServiceException;
 import com.aadp.vend.ws.io.entity.HumanUserEntity;
-import com.aadp.vend.ws.io.entity.MachineUserEnitity;
+import com.aadp.vend.ws.io.entity.Machine;
 import com.aadp.vend.ws.io.entity.Users;
 import com.aadp.vend.ws.io.repository.UserRepositoryMine;
 import com.aadp.vend.ws.service.UserService;
@@ -57,22 +57,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public MachineUserDto createMachineUserForHuman(MachineUserDto user) {
 
-		if (userRepository.findHumanUserByEmailId(user.getHumanUserEmail()) == null)
-			throw new UserServiceException("No Human User available for the requestested machine");
 		
 		if (userRepository.findMachineUserByEmailId(user.getEmail()) != null)
 			throw new UserServiceException("Machine already exists by the email id, Try some other Mail Id");
 
 		ModelMapper modelMapper = new ModelMapper();
-		MachineUserEnitity machineUserEnitity = modelMapper.map(user, MachineUserEnitity.class);
-		List<MachineUserEnitity> machineUserList = new ArrayList<MachineUserEnitity>();
+		Machine machineUserEnitity = modelMapper.map(user, Machine.class);
+		
 
 		String publicUserId = utils.generateUserId(30);
 		machineUserEnitity.setUserId(publicUserId);
 		machineUserEnitity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		machineUserList.add(machineUserEnitity);
-		MachineUserEnitity storedUserDetails = userRepository.addMachineForHumanUser(user.getHumanUserEmail(),
-				machineUserList);
+		
+		Machine storedUserDetails = userRepository.addMachineUser(machineUserEnitity);
 
 		MachineUserDto returnValue = modelMapper.map(storedUserDetails, MachineUserDto.class);
 

@@ -1,7 +1,5 @@
 package com.aadp.vend.ws.ui.contoller;
 
-import javax.annotation.PostConstruct;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +21,7 @@ import com.aadp.vend.ws.ui.model.response.UserRest;
 
 @RestController
 @RequestMapping("/users")
-public class HumanUserController {
+public class UserController {
 
 	@Autowired
 	UserService userService;
@@ -31,11 +29,11 @@ public class HumanUserController {
 	@GetMapping(path = "/{id}")
 	public UserRest getUser(@PathVariable String id) {
 		
-		UserRest returnValue = new UserRest();
+		
 		ModelMapper modelMapper = new ModelMapper();
 	
 		 UserDto userDto = userService.getUser(id);
-		 return returnValue = modelMapper.map(userDto, UserRest.class);
+		 return  modelMapper.map(userDto, UserRest.class);
 
 		
 	}

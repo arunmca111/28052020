@@ -9,8 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,6 +32,10 @@ public class Orders implements Serializable {
 	@Id
 	@Column(nullable = false, length = 120)
 	private String ordersId;
+	
+	@Id
+	@Column(nullable = false)
+	private String userId;
 	
 	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)
 	private List<CartItems> cartItems;
@@ -106,5 +108,13 @@ public class Orders implements Serializable {
 
 	public void setOrdersId(String ordersId) {
 		this.ordersId = ordersId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }
