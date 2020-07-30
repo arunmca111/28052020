@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/input.dart';
+import 'package:flutter_complete_guide/providers/machineInfo.dart';
+import 'package:provider/provider.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class MachineEntry extends StatefulWidget {
@@ -13,6 +15,7 @@ class _MachineEntryState extends State<MachineEntry> {
   ExampleNumber selectedNumber;
   List<int> selectedItems = [];
   final List<DropdownMenuItem> items = [];
+  List<MachineInfo> machineInfoList = [];
 
   static const String appTitle = "Select the Machine";
 
@@ -20,17 +23,24 @@ class _MachineEntryState extends State<MachineEntry> {
   void initState() {
     String wordPair = "";
 
-        items.add(DropdownMenuItem(
-          child: Text(wordPair),
-          value: wordPair,
-        ));
+    Future.delayed(Duration.zero).then((_) async {
+      machineInfoList = await Provider.of<MachinesInfo>(context, listen: false)
+          .fetchMachineInfo();
+    });
 
-    );
+    machineInfoList.forEach((element) {
+      items.add(DropdownMenuItem(
+        child: Text(element.machineCode),
+        value: element.machineCode,
+      ));
+    });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    /*machineInfoList = Provider.of<MachinesInfo>(context).machineInfo;*/
     Map<String, Widget> widgets;
     widgets = {
       "Select Machine": SearchableDropdown.single(

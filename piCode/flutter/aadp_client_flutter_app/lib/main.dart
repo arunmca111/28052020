@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/machineInfo.dart';
 import 'package:flutter_complete_guide/providers/paymentsInfo.dart';
 import 'package:flutter_complete_guide/screens/machine_entry_screen.dart';
 import 'package:flutter_complete_guide/screens/payment_screen.dart';
@@ -49,6 +50,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, PaymentsInfo>(
           update: (ctx, auth, previousOrders) => PaymentsInfo(
+            auth.token,
+            auth.userId,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, MachinesInfo>(
+          update: (ctx, auth, previousOrders) => MachinesInfo(
             auth.token,
             auth.userId,
           ),

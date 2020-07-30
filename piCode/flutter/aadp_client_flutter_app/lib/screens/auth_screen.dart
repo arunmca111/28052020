@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/machineInfo.dart';
 import 'package:provider/provider.dart';
 
 import '../models/http_exception.dart';
@@ -120,6 +121,9 @@ class _AuthCardState extends State<AuthCard> {
           _authData['phoneNumber'],
         );
       }
+
+      await Provider.of<MachinesInfo>(context, listen: false)
+          .fetchMachineInfo();
       //_showDialog('Success!', 'Record Updated Successfully');
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
@@ -140,6 +144,7 @@ class _AuthCardState extends State<AuthCard> {
           'Could not authenticate you. Please try again later.';
       _showDialog('An Error Occurred!', errorMessage);
     }
+
     setState(() {
       _passwordController.text = '';
       _authMode = AuthMode.Login;
