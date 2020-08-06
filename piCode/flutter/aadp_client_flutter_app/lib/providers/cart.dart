@@ -66,7 +66,7 @@ class Cart with ChangeNotifier {
       String machineSlotId, String productId, int itemCount) async {
     _productAvailStatus = false;
     final url =
-        'http://10.0.2.2:8081/products/machinecode/$selectedMachineCode/machineSlotId/$machineSlotId/productId/$productId/itemCount/$itemCount';
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/products/machinecode/$selectedMachineCode/machineSlotId/$machineSlotId/productId/$productId/itemCount/$itemCount';
     try {
       final response = await http.get(
         url,

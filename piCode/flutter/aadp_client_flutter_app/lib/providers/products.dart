@@ -32,7 +32,8 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final filterString =
         filterByUser ? "$userId/userProducts" : '$selectedMachineCode';
-    final url = 'http://10.0.2.2:8081/products/$filterString';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/products/$filterString';
     try {
       final response = await http.get(
         url,
@@ -67,7 +68,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'http://10.0.2.2:8081/products/product';
+    const url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/products/product';
     try {
       final response = await http.post(
         url,
@@ -111,7 +113,8 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _productItems.indexWhere((prod) => prod.productId == id);
     if (prodIndex >= 0) {
-      final url = 'http://10.0.2.2:8081/products/$id';
+      final url =
+          'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/products/$id';
       await http.patch(url,
           headers: {
             "Content-Type": "application/json",
@@ -132,7 +135,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'http://10.0.2.2:8081/products/$id';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/products/$id';
     final existingProductIndex =
         _productItems.indexWhere((prod) => prod.productId == id);
     var existingProduct = _productItems[existingProductIndex];

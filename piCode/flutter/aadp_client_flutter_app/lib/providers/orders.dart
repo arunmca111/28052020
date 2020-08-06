@@ -39,7 +39,8 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, double total,
       UpiTransactionResponse upiResponse) async {
-    const url = 'http://10.0.2.2:8081/orders/order';
+    const url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/orders/order';
     final timeStamp = DateTime.now();
 
     try {
@@ -97,7 +98,8 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    final url = 'http://10.0.2.2:8081/orders/$userId';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/orders/$userId';
     logger.d("url is ----> " + url);
     final response = await http.get(url, headers: {
       "Content-Type": "application/json",

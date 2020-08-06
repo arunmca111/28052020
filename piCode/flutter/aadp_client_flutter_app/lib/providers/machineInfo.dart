@@ -38,7 +38,8 @@ class MachinesInfo with ChangeNotifier {
 
   Future<void> fetchMachineInfo() async {
     _machineInfo = [];
-    final url = 'http://10.0.2.2:8081/machine/';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/machine/';
     logger.d("url is ----> " + url);
     final response = await http.get(url, headers: {
       "Content-Type": "application/json",

@@ -75,7 +75,8 @@ class Auth with ChangeNotifier {
 
   Future<void> signup(String email, String password, String firstName,
       String lastName, String phoneNumber) async {
-    final url = 'http://10.0.2.2:8081/users/human';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/users/human';
     var bodyRequest = json.encode({
       'email': email,
       'password': password,
@@ -88,7 +89,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    final url = 'http://10.0.2.2:8081/users/login';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/users/login';
     var bodyRequest = json.encode({
       'email': email,
       'password': password,

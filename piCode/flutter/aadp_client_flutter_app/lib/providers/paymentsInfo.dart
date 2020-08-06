@@ -35,7 +35,8 @@ class PaymentsInfo with ChangeNotifier {
   PaymentsInfo(this.authToken, this.userId);
 
   Future<void> fetchAndSetPaymentInfo() async {
-    final url = 'http://10.0.2.2:8081/payments/$userId';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/payments/$userId';
     logger.d("url is ----> " + url);
     final response = await http.get(url, headers: {
       "Content-Type": "application/json",

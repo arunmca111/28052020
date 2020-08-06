@@ -30,7 +30,8 @@ class Product with ChangeNotifier {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final url = 'http://10.0.2.2:8081/products/$productId';
+    final url =
+        'http://aadpbackendapi-env.eba-5w95vzgc.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/products/$productId';
     try {
       final response = await http.patch(
         url,
