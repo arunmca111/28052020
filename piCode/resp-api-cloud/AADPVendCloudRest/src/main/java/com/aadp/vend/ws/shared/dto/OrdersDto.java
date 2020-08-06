@@ -11,6 +11,7 @@ public class OrdersDto implements Serializable{
 	
 	private String ordersId;
 	private String userId;
+	private String machineCode;
 	private double amount;
 	private Date dateTime;
 	private List<CartItemsDto> cartItems;
@@ -46,6 +47,12 @@ public class OrdersDto implements Serializable{
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getMachineCode() {
+		return machineCode;
+	}
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
 	}
 	
 	

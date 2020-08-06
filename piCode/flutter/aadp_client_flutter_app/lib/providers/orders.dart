@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_complete_guide/models/UpiTransactionResponse.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
@@ -9,12 +10,14 @@ import './cart.dart';
 
 class OrderItem {
   final String id;
+  final String machineCode;
   final double amount;
   final List<CartItem> products;
   final DateTime dateTime;
 
   OrderItem({
     @required this.id,
+    @required this.machineCode,
     @required this.amount,
     @required this.products,
     @required this.dateTime,
@@ -31,9 +34,11 @@ class Orders with ChangeNotifier {
 
   final String authToken;
   final String userId;
-  Orders(this.authToken, this.userId, this._orders);
+  final String selectedMachineCode;
+  Orders(this.authToken, this.userId, this.selectedMachineCode, this._orders);
 
-  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+  Future<void> addOrder(List<CartItem> cartProducts, double total,
+      UpiTransactionResponse upiResponse) async {
     const url = 'http://10.0.2.2:8081/orders/order';
     final timeStamp = DateTime.now();
 
@@ -48,11 +53,14 @@ class Orders with ChangeNotifier {
         body: json.encode({
           'ordersId': '',
           'userId': userId,
+          'machineCode': selectedMachineCode,
           'amount': total,
+          'upiTranResponse': upiResponse,
           'dateTime': timeStamp.toIso8601String(),
           'cartItems': cartProducts
               .map((cp) => {
                     'cartId': '',
+                    'slotId': cp.machineSlotId,
                     'prodId': cp.prodId,
                     'title': cp.title,
                     'quantity': cp.quantity,
@@ -74,6 +82,7 @@ class Orders with ChangeNotifier {
         0,
         OrderItem(
           id: json.decode(response.body)['ordersId'],
+          machineCode: json.decode(response.body)['machineCode'],
           amount: total,
           dateTime: timeStamp,
           products: cartProducts,

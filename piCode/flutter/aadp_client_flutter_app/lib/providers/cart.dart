@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 class CartItem {
   final String id;
   final String prodId;
+  final String machineSlotId;
   final String imageUrl;
   final String title;
   final int quantity;
@@ -12,6 +16,7 @@ class CartItem {
   CartItem({
     @required this.id,
     @required this.prodId,
+    @required this.machineSlotId,
     @required this.imageUrl,
     @required this.title,
     @required this.quantity,
@@ -21,6 +26,12 @@ class CartItem {
 
 class Cart with ChangeNotifier {
   var logger = Logger();
+  bool _productAvailStatus = false;
+  final String authToken;
+  final String userId;
+  final String selectedMachineCode;
+  Cart(this.authToken, this.userId, this.selectedMachineCode, this._items);
+
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
@@ -31,9 +42,13 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
-  int findQuantity(String productId) {
-    if (_items.containsKey(productId)) {
-      return _items[productId].quantity;
+  bool get productAvailStatus {
+    return _productAvailStatus;
+  }
+
+  int findQuantity(String machineSlotId) {
+    if (_items.containsKey(machineSlotId)) {
+      return _items[machineSlotId].quantity;
     } else {
       return 0;
     }
@@ -47,36 +62,66 @@ class Cart with ChangeNotifier {
     return total;
   }
 
-  void editQuantityBy(String productId, int editBy) {
-    if (_items.containsKey(productId)) {
-      // change quantity...
+  Future<void> checkAvailableQty(
+      String machineSlotId, String productId, int itemCount) async {
+    _productAvailStatus = false;
+    final url =
+        'http://10.0.2.2:8081/products/machinecode/$selectedMachineCode/machineSlotId/$machineSlotId/productId/$productId/itemCount/$itemCount';
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": authToken,
+        },
+      );
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      if (extractedData == null) {
+        return false;
+      }
+      extractedData.forEach((key, value) {
+        _productAvailStatus = value;
+      });
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  void editQuantityBy(String machineSlotId, int editBy) async {
+    if (_items.containsKey(machineSlotId)) {
       _items.update(
-        productId,
+        machineSlotId,
         (existingCartItem) => CartItem(
           id: existingCartItem.id,
+          prodId: existingCartItem.prodId,
+          machineSlotId: existingCartItem.machineSlotId,
           imageUrl: existingCartItem.imageUrl,
           title: existingCartItem.title,
           price: existingCartItem.price,
           quantity: existingCartItem.quantity + editBy,
         ),
       );
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void addItem(
     String productId,
+    String machineSlotId,
     String imageUrl,
     double price,
     String title,
   ) {
-    if (_items.containsKey(productId)) {
+    if (_items.containsKey(machineSlotId)) {
       // change quantity...
       _items.update(
-        productId,
+        machineSlotId,
         (existingCartItem) => CartItem(
           id: existingCartItem.id,
           prodId: existingCartItem.prodId,
+          machineSlotId: machineSlotId,
           imageUrl: existingCartItem.imageUrl,
           title: existingCartItem.title,
           price: existingCartItem.price,
@@ -85,10 +130,11 @@ class Cart with ChangeNotifier {
       );
     } else {
       _items.putIfAbsent(
-        productId,
+        machineSlotId,
         () => CartItem(
           id: DateTime.now().toString(),
           prodId: productId,
+          machineSlotId: machineSlotId,
           imageUrl: imageUrl,
           title: title,
           price: price,
@@ -100,8 +146,8 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(String productId) {
-    _items.remove(productId);
+  void removeItem(String machineSlotId) {
+    _items.remove(machineSlotId);
     notifyListeners();
   }
 
@@ -110,13 +156,13 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeSingleItem(String productId) {
-    if (!_items.containsKey(productId)) {
+  void removeSingleItem(String machineSlotId) {
+    if (!_items.containsKey(machineSlotId)) {
       return;
     }
-    if (_items[productId].quantity > 1) {
+    if (_items[machineSlotId].quantity > 1) {
       _items.update(
-          productId,
+          machineSlotId,
           (existingCartItem) => CartItem(
                 id: existingCartItem.id,
                 prodId: existingCartItem.prodId,
@@ -126,7 +172,7 @@ class Cart with ChangeNotifier {
                 quantity: existingCartItem.quantity - 1,
               ));
     } else {
-      _items.remove(productId);
+      _items.remove(machineSlotId);
     }
     logger.d('remove item called');
     notifyListeners();

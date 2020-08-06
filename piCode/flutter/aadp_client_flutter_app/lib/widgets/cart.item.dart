@@ -10,16 +10,18 @@ import '../widgets/round_icon_button.dart';
 class CartItem extends StatelessWidget {
   final String id;
   final String productId;
+  final String machineSlotId;
   final String imageUrl;
   final double price;
   final int quantity;
   final String title;
 
-  CartItem(this.id, this.productId, this.imageUrl, this.price, this.quantity,
-      this.title);
+  CartItem(this.id, this.productId, this.machineSlotId, this.imageUrl,
+      this.price, this.quantity, this.title);
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     final cart = Provider.of<Cart>(context, listen: false);
 
     return Dismissible(
@@ -43,7 +45,7 @@ class CartItem extends StatelessWidget {
         return _showDialog(context);
       },
       onDismissed: (direction) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId);
+        Provider.of<Cart>(context, listen: false).removeItem(machineSlotId);
       },
       child: Stack(
         children: <Widget>[
@@ -74,7 +76,7 @@ class CartItem extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.only(right: 8, top: 4),
                           child: Text(
-                            title,
+                            '$machineSlotId - $title',
                             maxLines: 2,
                             softWrap: true,
                             style: CustomTextStyle.textFormFieldSemiBold
@@ -107,10 +109,15 @@ class CartItem extends StatelessWidget {
                                       if (condtion) {
                                         Provider.of<Cart>(context,
                                                 listen: false)
-                                            .removeItem(productId);
+                                            .removeItem(machineSlotId);
                                       }
                                     } else {
-                                      cart.editQuantityBy(productId, -1);
+                                      cart.editQuantityBy(machineSlotId, -1);
+                                      SnackBar(
+                                        content: Text(
+                                          'Product removed',
+                                        ),
+                                      );
                                     }
                                   }),
                               Container(
@@ -127,7 +134,24 @@ class CartItem extends StatelessWidget {
                                   fillColor: Colors.grey.shade200,
                                   iconColor: Colors.black,
                                   onPressed: () {
-                                    cart.editQuantityBy(productId, 1);
+                                    var printText = '';
+                                    cart
+                                        .checkAvailableQty(machineSlotId,
+                                            productId, quantity + 1)
+                                        .then((_) {
+                                      if (cart.productAvailStatus) {
+                                        cart.editQuantityBy(machineSlotId, 1);
+                                        printText = 'Product added';
+                                      } else {
+                                        printText = 'Product out of stock';
+                                      }
+
+                                      scaffold.showSnackBar(
+                                        SnackBar(
+                                          content: Text(printText),
+                                        ),
+                                      );
+                                    });
                                   }),
                               Flexible(fit: FlexFit.tight, child: SizedBox()),
                               Padding(

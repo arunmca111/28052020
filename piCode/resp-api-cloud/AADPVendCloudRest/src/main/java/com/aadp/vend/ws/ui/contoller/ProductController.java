@@ -21,6 +21,7 @@ import com.aadp.vend.ws.shared.dto.ProductsDto;
 import com.aadp.vend.ws.ui.model.request.FavoriteRequestModel;
 import com.aadp.vend.ws.ui.model.request.ProductDetailRequestModel;
 import com.aadp.vend.ws.ui.model.response.OperationStatusModel;
+import com.aadp.vend.ws.ui.model.response.ProductAvailabilityResponse;
 import com.aadp.vend.ws.ui.model.response.ProductsResponse;
 import com.aadp.vend.ws.ui.model.response.RequestOperationStatus;
 
@@ -31,19 +32,26 @@ public class ProductController {
 	@Autowired
 	ProductsService productsService;
 
-	@GetMapping(path = "/{id}")
-	public ProductsResponse getProducts(@PathVariable String id) {
-
-		ProductsDto productsDto = null;
+	@GetMapping(path = "/{machineId}")
+	public List<ProductsResponse> getProductsForMachine(@PathVariable String machineId) {
+		List<ProductsResponse> returnValue = new ArrayList<ProductsResponse>();
+		List<ProductsDto> productsDto = null;
 		ModelMapper modelMapper = new ModelMapper();
 
 		try {
-			productsDto = productsService.getProducts(id);
+			productsDto = productsService.getProducts(machineId);
+
+			for (ProductsDto productDto : productsDto) {
+				ProductsResponse productModel = new ProductsResponse();
+				modelMapper.map(productDto, productModel);
+				returnValue.add(productModel);
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return modelMapper.map(productsDto, ProductsResponse.class);
+		return returnValue;
 
 	}
 
@@ -104,7 +112,7 @@ public class ProductController {
 		return returnValue;
 
 	}
-	
+
 	@GetMapping(path = "/{userId}/userProducts", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
 	public List<ProductsResponse> getProductsByuserID(@PathVariable String userId) {
@@ -128,7 +136,6 @@ public class ProductController {
 		return returnValue;
 
 	}
-
 
 	@PostMapping
 	@RequestMapping("/product")
@@ -164,6 +171,27 @@ public class ProductController {
 	public boolean addFavorite(@RequestBody FavoriteRequestModel favDetail) {
 
 		return true;
+
+	}
+
+	@GetMapping(path = "machinecode/{machinecode}/machineSlotId/{machineSlotId}/productId/{productId}/itemCount/{itemCount}", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
+	public ProductAvailabilityResponse getProductsAvailability(@PathVariable String machinecode, @PathVariable String machineSlotId, @PathVariable String productId, @PathVariable int itemCount) {
+
+		boolean returnValue = false;
+		ProductAvailabilityResponse response = new ProductAvailabilityResponse();
+	
+
+		try {
+			returnValue = productsService.getProductsAvailability(machinecode, machineSlotId, productId, itemCount);
+			response.setResult(returnValue);
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
 
 	}
 }

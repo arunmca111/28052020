@@ -6,7 +6,8 @@ public class ProductsDto implements Serializable {
 
 	private static final long serialVersionUID = -5020622906546337589L;
 	
-	private String id;
+	private String machineSlotId;
+	private String productId;
 	private String userId;
 	private String title;
 	private String description;
@@ -14,12 +15,7 @@ public class ProductsDto implements Serializable {
 	private String imageUrl;
 	private boolean isFavorite;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -55,6 +51,18 @@ public class ProductsDto implements Serializable {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getMachineslotId() {
+		return machineSlotId;
+	}
+	public void setMachineslotId(String machineSlotId) {
+		this.machineSlotId = machineSlotId;
+	}
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 	
 

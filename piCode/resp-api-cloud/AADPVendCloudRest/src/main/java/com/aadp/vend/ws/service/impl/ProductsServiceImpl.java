@@ -24,14 +24,23 @@ public class ProductsServiceImpl implements ProductsService {
 	Utils utils;
 
 	@Override
-	public ProductsDto getProducts(String productId) throws Exception {
-		Products productsEntity = productsRepository.findProductsById(productId);
-
-		if (productsEntity == null)
-			throw new Exception(productId);
-
-		ModelMapper modelMapper = new ModelMapper();
-		ProductsDto returnValue = modelMapper.map(productsEntity, ProductsDto.class);
+	public List<ProductsDto> getProducts(String machineId) throws Exception {
+		List<ProductsDto> returnValue = new ArrayList<>();
+		ProductsDto storeDto = null;
+		List<Object[]> results = productsRepository.findProductsBymachineId(machineId);
+		
+		for (Object[] product : results) {
+			storeDto = new ProductsDto();
+			storeDto.setMachineslotId((String) product[0]);
+			storeDto.setProductId((String) product[1]);
+			storeDto.setTitle((String) product[2]);
+			storeDto.setDescription((String) product[3]);
+			storeDto.setPrice((double) product[4]);
+			storeDto.setImageUrl((String) product[5]);
+			storeDto.setFavorite((boolean) product[6]);
+			returnValue.add(storeDto);
+			
+		}
 
 		return returnValue;
 
@@ -65,7 +74,7 @@ public class ProductsServiceImpl implements ProductsService {
 
 	@Override
 	public ProductsDto createProducts(ProductsDto products) throws Exception {
-		if (productsRepository.findProductsById(products.getId()) != null)
+		if (productsRepository.findProductsById(products.getProductId()) != null)
 			throw new Exception("Product already exists");
 
 		ModelMapper modelMapper = new ModelMapper();
@@ -130,6 +139,12 @@ public class ProductsServiceImpl implements ProductsService {
 		
 
 		return true;
+	}
+
+	@Override
+	public boolean getProductsAvailability(String machinecode, String machineSlotId, String productId, int itemCount) throws Exception {
+		boolean result = productsRepository.getProductsAvailability(machinecode, machineSlotId, productId, itemCount) !=null ? true : false ;
+		return result;
 	}
 
 }

@@ -16,6 +16,9 @@ public class CartItems implements Serializable {
 	@Column(nullable = false, length = 120)
 	private String cartId;
 	
+	@Column(nullable = false, length = 4)
+	private String slotId;
+	
 	@Column(nullable = false, length = 120)
 	private String prodId;
 	
@@ -78,6 +81,14 @@ public class CartItems implements Serializable {
 
 	public void setProdId(String prodId) {
 		this.prodId = prodId;
+	}
+
+	public String getSlotId() {
+		return slotId;
+	}
+
+	public void setSlotId(String slotId) {
+		this.slotId = slotId;
 	}
 
 }

@@ -72,7 +72,7 @@ class _ProductsOverviewScreenState extends State<ProductOverview> {
                         content: Text(
                           'Cart is empty!',
                         ),
-                        duration: Duration(seconds: 2),
+                        duration: Duration(seconds: 1),
                       ),
                     );
                   }

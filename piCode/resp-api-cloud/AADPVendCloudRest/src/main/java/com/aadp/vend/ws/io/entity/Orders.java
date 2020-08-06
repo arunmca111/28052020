@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -37,8 +38,14 @@ public class Orders implements Serializable {
 	@Column(nullable = false)
 	private String userId;
 	
+	@Column(nullable = false, length = 7)
+	private String machineCode;
+	
 	@OneToMany(mappedBy="order", cascade=CascadeType.ALL)
 	private List<CartItems> cartItems;
+	
+	@OneToOne
+	private PaymentTran payment;
 	
 	@Column(nullable = false, length = 18)
 	private double amount;
@@ -116,5 +123,21 @@ public class Orders implements Serializable {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getMachineCode() {
+		return machineCode;
+	}
+
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
+	}
+
+	public PaymentTran getPayment() {
+		return payment;
+	}
+
+	public void setPayment(PaymentTran payment) {
+		this.payment = payment;
 	}
 }

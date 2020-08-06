@@ -8,14 +8,15 @@ import 'package:logger/logger.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  Products(this.authToken, this.userId, this._productItems);
+  Products(this.authToken, this.userId, this.selectedMachineCode,
+      this._productItems);
 
   List<Product> _productItems = [];
   var logger = Logger();
 
   final String authToken;
   final String userId;
-
+  final String selectedMachineCode;
   List<Product> get productItems {
     return [..._productItems];
   }
@@ -25,11 +26,12 @@ class Products with ChangeNotifier {
   }
 
   Product findProductById(String id) {
-    return productItems.firstWhere((element) => element.id == id);
+    return productItems.firstWhere((element) => element.productId == id);
   }
 
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
-    final filterString = filterByUser ? "$userId/userProducts" : '';
+    final filterString =
+        filterByUser ? "$userId/userProducts" : '$selectedMachineCode';
     final url = 'http://10.0.2.2:8081/products/$filterString';
     try {
       final response = await http.get(
@@ -48,7 +50,8 @@ class Products with ChangeNotifier {
       }
       extractedData.forEach((prodData) {
         loadedProducts.add(Product(
-          id: prodData['id'],
+          productId: prodData['productId'],
+          machineSlotId: prodData['machineSlotId'],
           title: prodData['title'],
           description: prodData['description'],
           price: prodData['price'],
@@ -88,7 +91,7 @@ class Products with ChangeNotifier {
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
-        id: json.decode(response.body)['id'],
+        productId: json.decode(response.body)['id'],
       );
       logger.d("http status code is ->>>" + response.statusCode.toString());
       if (response.statusCode == 200) {
@@ -106,7 +109,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> updateProduct(String id, Product newProduct) async {
-    final prodIndex = _productItems.indexWhere((prod) => prod.id == id);
+    final prodIndex = _productItems.indexWhere((prod) => prod.productId == id);
     if (prodIndex >= 0) {
       final url = 'http://10.0.2.2:8081/products/$id';
       await http.patch(url,
@@ -131,7 +134,7 @@ class Products with ChangeNotifier {
   Future<void> deleteProduct(String id) async {
     final url = 'http://10.0.2.2:8081/products/$id';
     final existingProductIndex =
-        _productItems.indexWhere((prod) => prod.id == id);
+        _productItems.indexWhere((prod) => prod.productId == id);
     var existingProduct = _productItems[existingProductIndex];
     _productItems.removeAt(existingProductIndex);
     notifyListeners();

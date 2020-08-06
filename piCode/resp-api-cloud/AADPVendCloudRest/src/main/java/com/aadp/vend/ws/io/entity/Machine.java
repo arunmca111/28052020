@@ -34,7 +34,7 @@ public class Machine extends Users implements Serializable {
  	}
 	
 	
-	@Column(nullable = false, length = 7)
+	@Column(nullable = false, length = 7,unique = true)
     private String machineCode;
 	@Column(nullable = false, length = 7)
 	private String machineType;

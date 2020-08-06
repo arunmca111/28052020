@@ -23,15 +23,21 @@ class MachinesInfo with ChangeNotifier {
     return _machineInfo;
   }
 
+  String get selectedMachine {
+    return _selectedMachine;
+  }
+
   set selectedMachine(String selectedMachineId) {
     _selectedMachine = selectedMachineId;
+    logger.d("selected machine @@@@-> " + _selectedMachine);
   }
 
   final String authToken;
   final String userId;
   MachinesInfo(this.authToken, this.userId);
 
-  String fetchMachineInfo() async {
+  Future<void> fetchMachineInfo() async {
+    _machineInfo = [];
     final url = 'http://10.0.2.2:8081/machine/';
     logger.d("url is ----> " + url);
     final response = await http.get(url, headers: {
@@ -39,7 +45,6 @@ class MachinesInfo with ChangeNotifier {
       "Accept": "application/json",
       "Authorization": authToken,
     });
-    response.
 
     final extractedData = json.decode(response.body) as List<dynamic>;
     if (extractedData == null) {
@@ -50,7 +55,6 @@ class MachinesInfo with ChangeNotifier {
           machineCode: machineData['machineCode'],
           machineDescription: machineData['machineDescription']));
     });
-    return _machineInfo;
     notifyListeners();
   }
 }

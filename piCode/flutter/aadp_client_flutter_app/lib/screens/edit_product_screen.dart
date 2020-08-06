@@ -20,7 +20,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _editedProduct = Product(
-    id: null,
+    productId: null,
     title: '',
     price: 0,
     description: '',
@@ -95,9 +95,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() {
       _isLoading = true;
     });
-    if (_editedProduct.id != null) {
+    if (_editedProduct.productId != null) {
       await Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
+          .updateProduct(_editedProduct.productId, _editedProduct);
     } else {
       try {
         await Provider.of<Products>(context, listen: false)
@@ -169,7 +169,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             price: _editedProduct.price,
                             description: _editedProduct.description,
                             imageUrl: _editedProduct.imageUrl,
-                            id: _editedProduct.id,
+                            productId: _editedProduct.productId,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
@@ -201,7 +201,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             price: double.parse(value),
                             description: _editedProduct.description,
                             imageUrl: _editedProduct.imageUrl,
-                            id: _editedProduct.id,
+                            productId: _editedProduct.productId,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
@@ -226,7 +226,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           price: _editedProduct.price,
                           description: value,
                           imageUrl: _editedProduct.imageUrl,
-                          id: _editedProduct.id,
+                          productId: _editedProduct.productId,
                           isFavorite: _editedProduct.isFavorite,
                         );
                       },
@@ -287,7 +287,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 price: _editedProduct.price,
                                 description: _editedProduct.description,
                                 imageUrl: value,
-                                id: _editedProduct.id,
+                                productId: _editedProduct.productId,
                                 isFavorite: _editedProduct.isFavorite,
                               );
                             },

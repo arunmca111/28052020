@@ -24,9 +24,11 @@ public class OrdersRepository {
 	EntityManager em;
 
 	public Orders addOrders(Orders orders) {
-
+		
+		logger.info("adding Payment Tran");
+		em.persist(orders.getPayment());
+		
 		logger.info("adding Orders");
-
 		em.persist(orders);
 		em.flush();
 

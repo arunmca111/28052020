@@ -12,6 +12,7 @@ public class OrdersFetchResponse implements Serializable{
 	private static final long serialVersionUID = 1493712766075522129L;
 	
 	private String ordersId;
+	private String machineCode;
 	private double amount;
 	private Date dateTime;
 	private List<CartItemsModel> cartItems;
@@ -41,6 +42,12 @@ public class OrdersFetchResponse implements Serializable{
 	}
 	public void setCartItems(List<CartItemsModel> cartItems) {
 		this.cartItems = cartItems;
+	}
+	public String getMachineCode() {
+		return machineCode;
+	}
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
 	}
 	
 	

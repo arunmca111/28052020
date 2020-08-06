@@ -19,21 +19,9 @@ public class Products implements Serializable {
 	protected Products() {
 	}
 
-	public Products(String id,String userId,  String title, String description, double price, String imageUrl,
-			boolean isFavorite) {
-		this.id = id;
-		this.userId=userId;
-		this.title = title;
-		this.description = description;
-		this.price = price;
-		this.imageUrl = imageUrl;
-		this.isFavorite = isFavorite;
-
-	}
-
 	@Id
 	@Column(nullable = false, length = 120)
-	private String id;
+	private String productId;
 	
 	@Column(nullable = false, length = 50)
 	private String userId;
@@ -60,11 +48,11 @@ public class Products implements Serializable {
 	private boolean isFavorite = false;
 
 	public String getId() {
-		return id;
+		return productId;
 	}
 
 	public void setId(String id) { 
-		this.id = id;
+		this.productId = id;
 	}
 
 	public String getTitle() {
