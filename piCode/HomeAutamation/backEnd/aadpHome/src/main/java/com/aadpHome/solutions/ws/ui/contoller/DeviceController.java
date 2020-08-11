@@ -20,6 +20,7 @@ import com.aadpHome.solutions.ws.service.DeviceService;
 import com.aadpHome.solutions.ws.shared.dto.DeviceDto;
 import com.aadpHome.solutions.ws.ui.model.request.DeviceDetailRequestModel;
 import com.aadpHome.solutions.ws.ui.model.response.OperationStatusModel;
+import com.aadpHome.solutions.ws.ui.model.response.ActualDeviceResponse;
 import com.aadpHome.solutions.ws.ui.model.response.DeviceResponse;
 import com.aadpHome.solutions.ws.ui.model.response.RequestOperationStatus;
 
@@ -124,6 +125,30 @@ public class DeviceController {
 
 			for (DeviceDto deviceDto : DeviceDto) {
 				DeviceResponse deviceModel = new DeviceResponse();
+				modelMapper.map(deviceDto, deviceModel);
+				returnValue.add(deviceModel);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnValue;
+
+	}
+	
+	@GetMapping(path = "/{userId}/actualDevice", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE, "application/hal+json" })
+	public List<ActualDeviceResponse> getActualDeviceByuserID(@PathVariable String userId) {
+
+		List<DeviceDto> DeviceDto = null;
+		List<ActualDeviceResponse> returnValue = new ArrayList<ActualDeviceResponse>();
+		ModelMapper modelMapper = new ModelMapper();
+
+		try {
+			DeviceDto = DeviceService.getactualDeviceByuserID(userId);
+
+			for (DeviceDto deviceDto : DeviceDto) {
+				ActualDeviceResponse deviceModel = new ActualDeviceResponse();
 				modelMapper.map(deviceDto, deviceModel);
 				returnValue.add(deviceModel);
 			}

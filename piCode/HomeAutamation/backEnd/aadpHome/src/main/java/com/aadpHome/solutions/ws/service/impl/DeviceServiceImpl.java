@@ -58,6 +58,20 @@ public class DeviceServiceImpl implements DeviceService {
 		return returnValue;
 	}
 	
+	
+	@Override
+	public List<DeviceDto> getactualDeviceByuserID(String userId) throws Exception {
+		List<DeviceDto> returnValue = new ArrayList<>();
+		ModelMapper modelMapper = new ModelMapper();
+		Iterable<Device> devices = DeviceRepository.getactualDeviceByuserID(userId);
+
+		for (Device device : devices) {
+			returnValue.add(modelMapper.map(device, DeviceDto.class));
+		}
+
+		return returnValue;
+	}
+	
 	@Override
 	public List<DeviceDto> getDeviceByuserID(String userId) throws Exception {
 		List<DeviceDto> returnValue = new ArrayList<>();

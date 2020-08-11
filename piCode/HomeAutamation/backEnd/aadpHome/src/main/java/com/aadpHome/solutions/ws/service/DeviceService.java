@@ -10,6 +10,7 @@ public interface DeviceService  {
 	List<DeviceDto> getDevice(String machineId) throws Exception;
 	List<DeviceDto> getAllDevice() throws Exception;
 	List<DeviceDto> getDeviceByuserID(String userId) throws Exception;
+	List<DeviceDto> getactualDeviceByuserID(String userId) throws Exception;
 	DeviceDto updateDevice(String deviceId, DeviceDto Device) throws Exception;
 	void deleteDeviceUser(String deviceId) throws Exception;
 

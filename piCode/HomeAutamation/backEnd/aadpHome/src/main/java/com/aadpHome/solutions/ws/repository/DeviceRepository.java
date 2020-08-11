@@ -61,6 +61,14 @@ public class DeviceRepository {
 				Device.class);
 		return query.setParameter("userid", userId).getResultList();
 	}
+	
+	public List<Device> getactualDeviceByuserID(String userId) {
+		TypedQuery<Device> query = em.createQuery("SELECT d FROM Device d WHERE d.userId = :userid",
+				Device.class);
+		return query.setParameter("userid", userId).getResultList();
+	}
+	
+	
 
 	public Device addDevice(Device Device) {
 

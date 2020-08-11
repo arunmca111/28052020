@@ -32,7 +32,8 @@ class Device with ChangeNotifier {
     notifyListeners();
     print('result ' + onOffState.toString());
 
-    final url = 'http://10.0.2.2:5000/aadp-vend-ws/device/$deviceId';
+    final url =
+        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/$deviceId';
     try {
       final response = await http.patch(
         url,
