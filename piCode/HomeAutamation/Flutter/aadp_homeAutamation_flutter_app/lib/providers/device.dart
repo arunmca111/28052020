@@ -25,7 +25,8 @@ class Device with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus(String token, int deviceState) async {
+  Future<void> toggleFavoriteStatus(
+      String userId, String token, int deviceState) async {
     print('came 3 --->');
     final oldStatus = deviceState;
     onOffState = deviceState == 0 ? 1 : 0;
@@ -33,7 +34,7 @@ class Device with ChangeNotifier {
     print('result ' + onOffState.toString());
 
     final url =
-        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/$deviceId';
+        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/userId/$userId/deviceId/$deviceId';
     try {
       final response = await http.patch(
         url,

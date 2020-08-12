@@ -36,7 +36,8 @@ class DevicesItem extends StatelessWidget {
               color: Theme.of(context).accentColor,
               onPressed: () {
                 print('came 1');
-                device.toggleFavoriteStatus(authData.token, device.onOffState);
+                device.toggleFavoriteStatus(
+                    authData.userId, authData.token, device.onOffState);
               },
             ),
           ),

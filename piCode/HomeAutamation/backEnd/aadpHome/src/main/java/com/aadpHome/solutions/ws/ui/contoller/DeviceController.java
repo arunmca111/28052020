@@ -1,5 +1,6 @@
 package com.aadpHome.solutions.ws.ui.contoller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aadpHome.solutions.ws.iot.IotMqttConnect;
 import com.aadpHome.solutions.ws.service.DeviceService;
 import com.aadpHome.solutions.ws.shared.dto.DeviceDto;
 import com.aadpHome.solutions.ws.ui.model.request.DeviceDetailRequestModel;
@@ -23,6 +25,7 @@ import com.aadpHome.solutions.ws.ui.model.response.OperationStatusModel;
 import com.aadpHome.solutions.ws.ui.model.response.ActualDeviceResponse;
 import com.aadpHome.solutions.ws.ui.model.response.DeviceResponse;
 import com.aadpHome.solutions.ws.ui.model.response.RequestOperationStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/device")
@@ -54,21 +57,23 @@ public class DeviceController {
 
 	}
 
-	@PatchMapping(path = "/{id}", consumes = { MediaType.APPLICATION_XML_VALUE,
+	@PatchMapping(path = "userId/{userId}/deviceId/{deviceId}", consumes = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE })
-	public DeviceResponse updateUser(@PathVariable String id, @RequestBody DeviceDetailRequestModel productDetails) {
+	public DeviceResponse updateUser(@PathVariable String userId, @PathVariable String deviceId , @RequestBody DeviceDetailRequestModel productDetails) {
 		ModelMapper modelMapper = new ModelMapper();
 		DeviceResponse returnValue = new DeviceResponse();
 		DeviceDto DeviceDto = modelMapper.map(productDetails, DeviceDto.class);
 		DeviceDto updateProductDto = null;
 
 		try {
-			updateProductDto = DeviceService.updateDevice(id, DeviceDto);
+			updateProductDto = DeviceService.updateDevice(deviceId, DeviceDto);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		updateDeviceMqtt(userId);
+		
 		returnValue = new ModelMapper().map(updateProductDto, DeviceResponse.class);
 		return returnValue;
 	}
@@ -184,9 +189,42 @@ public class DeviceController {
 		return "update patch Device called";
 	}
 
-	@PutMapping
-	public String updateDevice() {
-		return "update Device called";
+	
+	private void updateDeviceMqtt(String userId) {
+		List<DeviceDto> DeviceDto = null;
+		List<ActualDeviceResponse> returnValue = new ArrayList<ActualDeviceResponse>();
+		ModelMapper modelMapper = new ModelMapper();
+
+		try {
+			DeviceDto = DeviceService.getactualDeviceByuserID(userId);
+
+			for (DeviceDto deviceDto : DeviceDto) {
+				ActualDeviceResponse deviceModel = new ActualDeviceResponse();
+				modelMapper.map(deviceDto, deviceModel);
+				returnValue.add(deviceModel);
+			}
+			
+			// Creating Object of ObjectMapper define in Jakson Api 
+	        ObjectMapper Obj = new ObjectMapper(); 
+	        String jsonStr ="";
+	  
+	        try { 
+	  
+	             jsonStr = Obj.writeValueAsString(returnValue); 
+	  
+	            // Displaying JSON String 
+	            System.out.println(jsonStr); 
+	            
+	            new IotMqttConnect().sendMessage(jsonStr);
+	        } 
+	        catch (Exception e) { 
+	            e.printStackTrace(); 
+	        } 
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
