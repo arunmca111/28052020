@@ -29,7 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				  //.antMatchers(HttpMethod.POST, "/products/product").permitAll()
 				  //.antMatchers(HttpMethod.GET, "/device/*/*").permitAll()
 				  //.antMatchers(HttpMethod.GET, "/device/*/actualDevice").permitAll()
-				  //.antMatchers(HttpMethod.PATCH, "/device/userId/*/deviceId/*").permitAll()
+				  .antMatchers(HttpMethod.PATCH, "/device/userId/*/deviceId/*").permitAll()
 				  //.antMatchers(HttpMethod.GET, "/products/*/*/*/*/*/*").permitAll()
 				  //.antMatchers(HttpMethod.GET, "/products/*/*").permitAll()
 				  //.antMatchers(HttpMethod.PATCH, "/products/*").permitAll()

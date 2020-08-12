@@ -36,6 +36,7 @@ import java.security.cert.CertificateFactory;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 import com.aadpHome.solutions.ws.iot.PrivateKeyReader;
@@ -120,19 +121,11 @@ public class SampleUtil {
 
     private static List<Certificate> loadCertificatesFromFile(final String filename) {
         
-    	File file = null;
-		try {
-			file = ResourceUtils.getFile("classpath:"+filename);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        if (!file.exists()) {
-            System.out.println("Certificate file: " + filename + " is not found.");
-            return null;
-        }
+    
+    	ClassPathResource cpr = new ClassPathResource("static/"+filename);
+	
 
-        try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file))) {
+        try (BufferedInputStream stream = new BufferedInputStream(cpr.getInputStream())) {
             final CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (List<Certificate>) certFactory.generateCertificates(stream);
         } catch (IOException | CertificateException e) {
@@ -144,18 +137,9 @@ public class SampleUtil {
     private static PrivateKey loadPrivateKeyFromFile(final String filename, final String algorithm) {
         PrivateKey privateKey = null;
 
-        File file = null;
-		try {
-			file = ResourceUtils.getFile("classpath:"+filename);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        if (!file.exists()) {
-            System.out.println("Private key file not found: " + filename);
-            return null;
-        }
-        try (DataInputStream stream = new DataInputStream(new FileInputStream(file))) {
+        ClassPathResource cpr = new ClassPathResource("static/"+filename);
+        
+        try (DataInputStream stream = new DataInputStream(cpr.getInputStream())) {
             privateKey = PrivateKeyReader.getPrivateKey(stream, algorithm);
         } catch (IOException | GeneralSecurityException e) {
             System.out.println("Failed to load private key from file " + filename);
