@@ -28,8 +28,7 @@ class Devices with ChangeNotifier {
   }
 
   Future<void> fetchAndSetDevices([bool filterByUser = false]) async {
-    final url =
-        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/$userId/userDevice';
+    final url = 'http://10.0.2.2:5000/aadp-vend-ws/device/$userId/userDevice';
     try {
       final response = await http.get(
         url,
@@ -63,8 +62,7 @@ class Devices with ChangeNotifier {
   }
 
   Future<void> addDevice(Device device) async {
-    const url =
-        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/newdevice';
+    const url = 'http://10.0.2.2:5000/aadp-vend-ws/device/newdevice';
     try {
       final response = await http.post(
         url,
@@ -109,8 +107,7 @@ class Devices with ChangeNotifier {
   Future<void> updateDevice(String id, Device newDevice) async {
     final prodIndex = _deviceItems.indexWhere((prod) => prod.deviceId == id);
     if (prodIndex >= 0) {
-      final url =
-          'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/$id';
+      final url = 'http://10.0.2.2:5000/aadp-vend-ws/device/$id';
       await http.patch(url,
           headers: {
             "Content-Type": "application/json",
@@ -131,8 +128,7 @@ class Devices with ChangeNotifier {
   }
 
   Future<void> deleteDevice(String id) async {
-    final url =
-        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/device/$id';
+    final url = 'http://10.0.2.2:5000/aadp-vend-ws/device/$id';
     final existingDeviceIndex =
         _deviceItems.indexWhere((device) => device.deviceId == id);
     var existingDevice = _deviceItems[existingDeviceIndex];

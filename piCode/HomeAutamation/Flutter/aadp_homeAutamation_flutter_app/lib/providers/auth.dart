@@ -87,8 +87,7 @@ class Auth with ChangeNotifier {
 
   Future<void> signup(String email, String password, String firstName,
       String lastName, String phoneNumber) async {
-    final url =
-        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/users/user';
+    final url = 'http://10.0.2.2:5000/aadp-vend-ws/users/user';
     var bodyRequest = json.encode({
       'email': email,
       'password': password,
@@ -101,8 +100,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    final url =
-        'http://aadphomeautomation-env.eba-hyr5pkk4.ap-south-1.elasticbeanstalk.com/aadp-vend-ws/users/login';
+    final url = 'http://10.0.2.2:5000/aadp-vend-ws/users/login';
+    print("Auth came with " + url);
     var bodyRequest = json.encode({
       'email': email,
       'password': password,
